@@ -2,7 +2,7 @@
 COMP 163 - Project 3: Quest Chronicles
 Game Data Module - Starter Code
 
-Name: [Your Name Here]
+Name: Jerryeka Battle
 
 AI Usage: [Document any AI assistance used]
 
