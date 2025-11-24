@@ -175,40 +175,31 @@ def create_default_data_files():
     if not os.path.exists("data/quests.txt"):
         with open("data/quests.txt", "w", encoding="utf-8") as f:
             f.write(
-                "QUEST_ID: intro\n"
-                "TITLE: The Beginning\n"
-                "DESCRIPTION: Defeat your first goblin.\n"
-                "REWARD_XP: 50\n"
+                "QUEST_ID: first_steps\n"
+                "TITLE: First Steps\n"
+                "DESCRIPTION: Begin your journey.\n"
+                "REWARD_XP: 25\n"
                 "REWARD_GOLD: 10\n"
                 "REQUIRED_LEVEL: 1\n"
                 "PREREQUISITE: NONE\n\n"
-                
-                "QUEST_ID: goblin_slayer\n"
-                "TITLE: Goblin Slayer\n"
-                "DESCRIPTION: Clear the forest of goblins.\n"
+
+                "QUEST_ID: goblin_hunter\n"
+                "TITLE: Goblin Hunter\n"
+                "DESCRIPTION: Clear out the goblins threatening the village.\n"
                 "REWARD_XP: 150\n"
                 "REWARD_GOLD: 50\n"
                 "REQUIRED_LEVEL: 2\n"
-                "PREREQUISITE: intro\n"
+                "PREREQUISITE: first_steps\n\n"
+
+                "QUEST_ID: dragon_slayer\n"
+                "TITLE: Dragon Slayer\n"
+                "DESCRIPTION: Defeat the mighty dragon and save the kingdom.\n"
+                "REWARD_XP: 500\n"
+                "REWARD_GOLD: 300\n"
+                "REQUIRED_LEVEL: 3\n"
+                "PREREQUISITE: goblin_hunter\n"
             )
 
-    if not os.path.exists("data/items.txt"):
-        with open("data/items.txt", "w", encoding="utf-8") as f:
-            f.write(
-                "ITEM_ID: sword_basic\n"
-                "NAME: Basic Sword\n"
-                "TYPE: weapon\n"
-                "EFFECT: strength:5\n"
-                "COST: 50\n"
-                "DESCRIPTION: A simple beginner's sword.\n\n"
-                
-                "ITEM_ID: potion_small\n"
-                "NAME: Small Health Potion\n"
-                "TYPE: consumable\n"
-                "EFFECT: health:20\n"
-                "COST: 20\n"
-                "DESCRIPTION: Restores a small amount of health.\n"
-            )
     # TODO: Implement this function
     # Create data/ directory if it doesn't exist
     # Create default quests.txt and items.txt files
