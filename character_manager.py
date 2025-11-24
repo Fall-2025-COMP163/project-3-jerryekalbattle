@@ -103,20 +103,12 @@ def save_character(character, save_directory="data/save_games"):
 
     try:
         with open(filename, "w", encoding="utf-8") as f:
-            f.write(f"NAME: {character['name']}\n")
-            f.write(f"CLASS: {character['class']}\n")
-            f.write(f"LEVEL: {character['level']}\n")
-            f.write(f"HEALTH: {character['health']}\n")
-            f.write(f"MAX_HEALTH: {character['max_health']}\n")
-            f.write(f"STRENGTH: {character['strength']}\n")
-            f.write(f"MAGIC: {character['magic']}\n")
-            f.write(f"EXPERIENCE: {character['experience']}\n")
-            f.write(f"GOLD: {character['gold']}\n")
-            f.write(f"INVENTORY: {','.join(character['inventory'])}\n")
-            f.write(f"ACTIVE_QUESTS: {','.join(character['active_quests'])}\n")
-            f.write(f"COMPLETED_QUESTS: {','.join(character['completed_quests'])}\n")
-
+            for key, value in character.items():
+                key_str = key.upper()  # required by tests
+                f.write(f"{key_str}: {value}\n")
         return True
+    except Exception as e:
+        raise SaveFileCorruptedError(str(e))
     
     except Exception as e:
         raise SaveFileCorruptedError(str(e))
@@ -145,14 +137,13 @@ def load_character(character_name, save_directory="data/save_games"):
 
     if not os.path.exists(filename):
         raise CharacterNotFoundError(f"No save found for {character_name}.")
-    # Check if file exists → CharacterNotFoundError
+
     try:
         with open(filename, "r", encoding="utf-8") as f:
             lines = f.readlines()
     except Exception as e:
         raise SaveFileCorruptedError(str(e))
-    
-    # Try to read file → SaveFileCorruptedError
+
     data = {}
 
     try:
@@ -161,49 +152,38 @@ def load_character(character_name, save_directory="data/save_games"):
             if not line:
                 continue
 
-            # Must contain ": "
-            if ":" not in line:
+            if ": " not in line:
                 raise InvalidSaveDataError("Invalid line in save file.")
-    
-            key, value = line.split(":", 1)
-            key = key.strip()
-            value = value.strip()
 
+            key, value = line.split(": ", 1)
+            key = key.strip().lower()
+            data[key] = value.strip()
+    except InvalidSaveDataError:
+        raise
+    except Exception as e:
+        raise SaveFileCorruptedError(str(e))
 
-            required_keys = [
-            "NAME", "CLASS", "LEVEL", "HEALTH", "MAX_HEALTH",
-            "STRENGTH", "MAGIC", "EXPERIENCE", "GOLD",
-            "INVENTORY", "ACTIVE_QUESTS", "COMPLETED_QUESTS"
-        ]
+    # Convert lists saved as strings
+    def parse_list(value):
+        return [] if value == "" else [x for x in value.split(",")]
 
-        for k in required_keys:
-            if k not in data:
-                raise InvalidSaveDataError(f"Missing '{k}' in save file.")
-        
-        character = {
-            "name": data["NAME"],
-            "class": data["CLASS"],
-            "level": int(data["LEVEL"]),
-            "health": int(data["HEALTH"]),
-            "max_health": int(data["MAX_HEALTH"]),
-            "strength": int(data["STRENGTH"]),
-            "magic": int(data["MAGIC"]),
-            "experience": int(data["EXPERIENCE"]),
-            "gold": int(data["GOLD"]),
-            "inventory": data["INVENTORY"].split(",") if data["INVENTORY"] else [],
-            "active_quests": data["ACTIVE_QUESTS"].split(",") if data["ACTIVE_QUESTS"] else [],
-            "completed_quests": data["COMPLETED_QUESTS"].split(",") if data["COMPLETED_QUESTS"] else []
-        }
-    
-        # Validate data format → InvalidSaveDataError
-        validate_character_data(character)
-        return character
-    except ValueError:
-        raise InvalidSaveDataError("Invalid number format in save file.")
-    except KeyError:
-        raise InvalidSaveDataError("Missing fields in save file.")
+    character = {
+        "name": data["name"],
+        "class": data["class"],
+        "level": int(data["level"]),
+        "health": int(data["health"]),
+        "max_health": int(data["max_health"]),
+        "strength": int(data["strength"]),
+        "magic": int(data["magic"]),
+        "experience": int(data["experience"]),
+        "gold": int(data["gold"]),
+        "inventory": parse_list(data.get("inventory", "")),
+        "active_quests": parse_list(data.get("active_quests", "")),
+        "completed_quests": parse_list(data.get("completed_quests", ""))
+    }
 
-    
+    return character
+
 
 def list_saved_characters(save_directory="data/save_games"):
     """
