@@ -269,9 +269,12 @@ def parse_item_block(lines):
         key = key.strip().upper()
         value = value.strip()
 
-        key = key.lower()
+        if key == "ITEM_ID":
+            key = "id"
+        else:
+            key = key.lower()
 
-        if key in ("cost",):
+        if key == "cost":
             try:
                 value = int(value)
             except ValueError:
@@ -279,12 +282,14 @@ def parse_item_block(lines):
 
         item[key] = value
 
-        required = ["id", "name", "type", "effect", "cost"]
+    required = ["id", "name", "type", "effect", "cost"]
     for r in required:
         if r not in item:
             raise InvalidDataFormatError(f"Missing required field: {r.upper()}")
 
     return item
+
+        
 
     # TODO: Implement parsing logic
 
