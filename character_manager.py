@@ -39,18 +39,18 @@ def create_character(name, character_class):
         "Warrior": {"health": 120, "strength": 15, "magic": 5},
         "Mage": {"health": 80, "strength": 8, "magic": 20},
         "Rogue": {"health": 90, "strength": 12, "magic": 10},
-        "Cleric": {"health": 100, "strength": 10, "magic": 15},
-        "Healer": {"health": 110, "strength": 6, "magic": 18}
+        "Cleric": {"health": 100, "strength": 10, "magic": 15}
     }
 
-    # Validate character_class first
-    # Example base stats:
-    # Warrior: health=120, strength=15, magic=5
-    # Mage: health=80, strength=8, magic=20
-    # Rogue: health=90, strength=12, magic=10
-    # Cleric: health=100, strength=10, magic=15
-    
-    character = {
+    if character_class not in valid_classes:
+        raise InvalidCharacterClassError(
+            f"'{character_class}' is not a valid class. "
+            f"Valid classes: {', '.join(valid_classes.keys())}"
+        )
+
+    stats = valid_classes[character_class]
+
+    return {
         "name": name,
         "class": character_class,
         "level": 1,
@@ -64,18 +64,16 @@ def create_character(name, character_class):
         "active_quests": [],
         "completed_quests": []
     }
+
+    # Validate character_class first
+    # Example base stats:
+    # Warrior: health=120, strength=15, magic=5
+    # Mage: health=80, strength=8, magic=20
+    # Rogue: health=90, strength=12, magic=10
+    # Cleric: health=100, strength=10, magic=15
     # All characters start with:
     # - level=1, experience=0, gold=100
     # - inventory=[], active_quests=[], completed_quests=[]
-    
-    if character_class not in valid_classes:
-        raise InvalidCharacterClassError(
-            f"'{character_class}' is not a valid class. "
-            f"Valid classes: {', '.join(valid_classes.keys())}"
-        )
-    stats = valid_classes[character_class]
-    # Raise InvalidCharacterClassError if class not in valid list
-    return character
 
 def save_character(character, save_directory="data/save_games"):
     """
@@ -162,20 +160,20 @@ def load_character(character_name, save_directory="data/save_games"):
             if not line:
                 continue
             if ":" not in line:
-                raise InvalidSaveDataError("Invalid line (missing ':') in save file.")
+                raise InvalidSaveDataError("Invalid line in save file.")
             key, value = line.split(": ", 1)
             data[key] = value
 
-            required_keys = [
+        required_keys = [
             "NAME", "CLASS", "LEVEL", "HEALTH", "MAX_HEALTH",
             "STRENGTH", "MAGIC", "EXPERIENCE", "GOLD",
             "INVENTORY", "ACTIVE_QUESTS", "COMPLETED_QUESTS"
         ]
+
         for k in required_keys:
             if k not in data:
                 raise InvalidSaveDataError(f"Missing '{k}' in save file.")
-
-
+            
             character = {
             "name": data["NAME"],
             "class": data["CLASS"],
@@ -186,13 +184,15 @@ def load_character(character_name, save_directory="data/save_games"):
             "magic": int(data["MAGIC"]),
             "experience": int(data["EXPERIENCE"]),
             "gold": int(data["GOLD"]),
-            "inventory": data["INVENTORY"].split(",") if data["INVENTORY"] != "" else [],
-            "active_quests": data["ACTIVE_QUESTS"].split(",") if data["ACTIVE_QUESTS"] != "" else [],
-            "completed_quests": data["COMPLETED_QUESTS"].split(",") if data["COMPLETED_QUESTS"] != "" else []
+            "inventory": data["INVENTORY"].split(",") if data["INVENTORY"] else [],
+            "active_quests": data["ACTIVE_QUESTS"].split(",") if data["ACTIVE_QUESTS"] else [],
+            "completed_quests":
+                data["COMPLETED_QUESTS"].split(",") if data["COMPLETED_QUESTS"] else []
         }
 
         validate_character_data(character)
         return character
+    
     # Validate data format → InvalidSaveDataError
     except KeyError:
         raise InvalidSaveDataError("Missing fields in save file.")
@@ -237,6 +237,7 @@ def delete_character(character_name, save_directory="data/save_games"):
 
     os.remove(filename)
     return True
+
     # TODO: Implement character deletion
     # Verify file exists before attempting deletion
 
@@ -373,22 +374,16 @@ def validate_character_data(character):
         if key not in character:
             raise InvalidSaveDataError(f"Missing field: {key}")
 
-    numeric_fields = [
-        "level", "health", "max_health", "strength",
-        "magic", "experience", "gold"
-    ]
-
-    for field in numeric_fields:
+    for field in ["level", "health", "max_health", "strength", "magic", "experience", "gold"]:
         if not isinstance(character[field], int):
             raise InvalidSaveDataError(f"Field {field} must be an integer.")
 
-    list_fields = ["inventory", "active_quests", "completed_quests"]
-
-    for field in list_fields:
+    for field in ["inventory", "active_quests", "completed_quests"]:
         if not isinstance(character[field], list):
             raise InvalidSaveDataError(f"Field {field} must be a list.")
 
     return True
+
     # TODO: Implement validation
     # Check all required keys exist
     # Check that numeric values are numbers
