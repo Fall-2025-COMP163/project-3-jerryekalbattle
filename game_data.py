@@ -260,26 +260,32 @@ def parse_item_block(lines):
     """
     item = {}
 
-    for line in lines:
-        if ": " not in line:
-            raise InvalidDataFormatError(f"Invalid line in item block: {line}")
-        key, value = line.split(": ", 1)
-        key = key.strip().lower()
+    for raw in lines:
+        line = raw.strip()
+        if not line or ":" not in line:
+            continue
 
-        if key == "effect":
-            # Parse effect like "strength:5"
-            if ":" not in value:
-                raise InvalidDataFormatError("Invalid effect format")
-            stat, amount = value.split(":", 1)
-            item[key] = {stat: int(amount)}
-        else:
-            item[key] = value.strip()
+        key, value = line.split(":", 1)
+        key = key.strip().upper()
+        value = value.strip()
 
-    # Standardize item_id
-    if "item_id" in item:
-        item["item_id"] = item["item_id"]
+        key = key.lower()
+
+        if key in ("cost",):
+            try:
+                value = int(value)
+            except ValueError:
+                raise InvalidDataFormatError(f"Invalid COST value: {value}")
+
+        item[key] = value
+
+        required = ["id", "name", "type", "effect", "cost"]
+    for r in required:
+        if r not in item:
+            raise InvalidDataFormatError(f"Missing required field: {r.upper()}")
 
     return item
+
     # TODO: Implement parsing logic
 
 # ============================================================================
