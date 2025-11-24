@@ -162,11 +162,13 @@ def load_character(character_name, save_directory="data/save_games"):
                 continue
 
             # Must contain ": "
-            if ": " not in line:
+            if ":" not in line:
                 raise InvalidSaveDataError("Invalid line in save file.")
+    
+            key, value = line.split(":", 1)
+            key = key.strip()
+            value = value.strip()
 
-            key, value = line.split(": ", 1)
-            data[key] = value
 
             required_keys = [
             "NAME", "CLASS", "LEVEL", "HEALTH", "MAX_HEALTH",
