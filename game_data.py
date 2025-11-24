@@ -133,7 +133,7 @@ def validate_quest_data(quest_dict):
     except ValueError:
         raise InvalidDataFormatError("Quest numeric fields must be integers")
 
-        
+    return True  
     # TODO: Implement validation
     # Check that all required keys exist
     # Check that numeric values are actually numbers
@@ -229,24 +229,27 @@ def parse_quest_block(lines):
     Raises: InvalidDataFormatError if parsing fails
     """
     quest = {}
-
     for line in lines:
         if ": " not in line:
             raise InvalidDataFormatError(f"Invalid line in quest block: {line}")
+
         key, value = line.split(": ", 1)
-
-        # Convert keys to lowercase for consistent dictionary usage
         key = key.strip().lower()
+        value = value.strip()
 
-        # Handle "NONE" prerequisite
-        if key == "prerequisite" and value.strip().upper() == "NONE":
-            quest[key] = None
+        # Convert numeric fields
+        if key in ["reward_xp", "reward_gold", "required_level"]:
+            try:
+                quest[key] = int(value)
+            except ValueError:
+                raise InvalidDataFormatError(f"Invalid number for {key}")
+
+        # Handle optional prerequisite
+        elif key == "prerequisite":
+            quest[key] = None if value.upper() == "NONE" else value
+
         else:
-            quest[key] = value.strip()
-
-    # Standardize quest_id
-    if "quest_id" in quest:
-        quest["quest_id"] = quest["quest_id"]
+            quest[key] = value
 
     return quest
     # TODO: Implement parsing logic
