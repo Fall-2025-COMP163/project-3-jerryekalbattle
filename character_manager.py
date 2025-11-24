@@ -153,18 +153,22 @@ def load_character(character_name, save_directory="data/save_games"):
         raise SaveFileCorruptedError(str(e))
     
     # Try to read file → SaveFileCorruptedError
+    data = {}
+
     try:
-        data = {}
         for line in lines:
             line = line.strip()
             if not line:
                 continue
-            if ":" not in line:
+
+            # Must contain ": "
+            if ": " not in line:
                 raise InvalidSaveDataError("Invalid line in save file.")
+
             key, value = line.split(": ", 1)
             data[key] = value
 
-        required_keys = [
+            required_keys = [
             "NAME", "CLASS", "LEVEL", "HEALTH", "MAX_HEALTH",
             "STRENGTH", "MAGIC", "EXPERIENCE", "GOLD",
             "INVENTORY", "ACTIVE_QUESTS", "COMPLETED_QUESTS"
@@ -173,8 +177,8 @@ def load_character(character_name, save_directory="data/save_games"):
         for k in required_keys:
             if k not in data:
                 raise InvalidSaveDataError(f"Missing '{k}' in save file.")
-            
-            character = {
+        
+        character = {
             "name": data["NAME"],
             "class": data["CLASS"],
             "level": int(data["LEVEL"]),
@@ -186,19 +190,18 @@ def load_character(character_name, save_directory="data/save_games"):
             "gold": int(data["GOLD"]),
             "inventory": data["INVENTORY"].split(",") if data["INVENTORY"] else [],
             "active_quests": data["ACTIVE_QUESTS"].split(",") if data["ACTIVE_QUESTS"] else [],
-            "completed_quests":
-                data["COMPLETED_QUESTS"].split(",") if data["COMPLETED_QUESTS"] else []
+            "completed_quests": data["COMPLETED_QUESTS"].split(",") if data["COMPLETED_QUESTS"] else []
         }
-
+    
+        # Validate data format → InvalidSaveDataError
         validate_character_data(character)
         return character
-    
-    # Validate data format → InvalidSaveDataError
-    except KeyError:
-        raise InvalidSaveDataError("Missing fields in save file.")
     except ValueError:
         raise InvalidSaveDataError("Invalid number format in save file.")
-    # Parse comma-separated lists back into Python lists
+    except KeyError:
+        raise InvalidSaveDataError("Missing fields in save file.")
+
+    
 
 def list_saved_characters(save_directory="data/save_games"):
     """
