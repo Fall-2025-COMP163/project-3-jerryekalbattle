@@ -258,38 +258,30 @@ def parse_item_block(lines):
     Returns: Dictionary with item data
     Raises: InvalidDataFormatError if parsing fails
     """
-    item = {}
+    quest = {}
+    for line in lines:
+        if ": " not in line:
+            raise InvalidDataFormatError(f"Invalid line in quest block: {line}")
 
-    for raw in lines:
-        line = raw.strip()
-        if not line or ":" not in line:
-            continue
-
-        key, value = line.split(":", 1)
-        key = key.strip().upper()
+        key, value = line.split(": ", 1)
+        key = key.strip().lower()
         value = value.strip()
 
-        # Map keys correctly
-        if key == "ITEM_ID":
-            key = "item_id"
-        else:
-            key = key.lower()
-
-        # Convert cost
-        if key == "cost":
+        # Convert numeric fields
+        if key in ["reward_xp", "reward_gold", "required_level"]:
             try:
-                value = int(value)
+                quest[key] = int(value)
             except ValueError:
-                raise InvalidDataFormatError(f"Invalid COST value: {value}")
+                raise InvalidDataFormatError(f"Invalid number for {key}")
 
-        item[key] = value
+        elif key == "prerequisite":
+            # MUST remain a STRING, not Python None
+            quest[key] = "NONE" if value.upper() == "NONE" else value
 
-    required = ["item_id", "name", "type", "effect", "cost", "description"]
-    for r in required:
-        if r not in item:
-            raise InvalidDataFormatError(f"Missing required field: {r.upper()}")
+        else:
+            quest[key] = value
 
-    return item
+    return quest
         
     # TODO: Implement parsing logic
 
