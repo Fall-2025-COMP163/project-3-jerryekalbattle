@@ -197,6 +197,22 @@ def create_default_data_files():
                 "REWARD_GOLD: 300\n"
                 "REQUIRED_LEVEL: 3\n"
                 "PREREQUISITE: goblin_hunter\n"
+
+                "QUEST_ID: hero\n"
+                "TITLE: Hero\n"
+                "DESCRIPTION: Defeat the demon king underlings.\n"
+                "REWARD_XP: 2000\n"
+                "REWARD_GOLD: 700\n"
+                "REQUIRED_LEVEL: 4\n"
+                "PREREQUISITE: goblin_hunter\n"
+
+                "QUEST_ID: hero\n"
+                "TITLE: Hero\n"
+                "DESCRIPTION: Defeat the demon king.\n"
+                "REWARD_XP: 4000\n"
+                "REWARD_GOLD: 1000\n"
+                "REQUIRED_LEVEL: 5\n"
+                "PREREQUISITE: goblin_hunter\n"
             )
 
     if not os.path.exists("data/items.txt"):
