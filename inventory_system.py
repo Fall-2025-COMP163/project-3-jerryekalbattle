@@ -423,17 +423,17 @@ def display_inventory(character, item_data_dict):
     
     print("\n=== INVENTORY ===")
     if not inventory:
-        print("Inventory is empty.")
+        print("Empty Inventory.")
         return
     
     counted = {}
     for item in inventory:
         counted[item] = counted.get(item, 0) + 1
 
-    for item_id, qty in counted.items():
+    for item_id, word in counted.items():
         item_name = item_data_dict[item_id]["name"]
         item_type = item_data_dict[item_id]["type"]
-        print(f"{item_name} ({item_type}) x{qty}")
+        print(f"{item_name} ({item_type}) x{word}")
     # TODO: Implement inventory display
     # Count items (some may appear multiple times)
     # Display with item names from item_data_dict
@@ -451,7 +451,7 @@ if __name__ == "__main__":
         add_item_to_inventory(test_char, "health_potion")
         print(f"Inventory: {test_char['inventory']}")
     except InventoryFullError:
-        print("Inventory is full!")
+        print("Inventory is full!, get rid of something to add.")
     
     # Test using items
     test_item = {
@@ -463,7 +463,7 @@ if __name__ == "__main__":
         result = use_item(test_char, "health_potion", test_item)
         print(result)
     except ItemNotFoundError:
-        print("Item not found")
+        print("Item was not found")
 
     # Test adding items
     # test_char = {'inventory': [], 'gold': 100, 'health': 80, 'max_health': 80}
