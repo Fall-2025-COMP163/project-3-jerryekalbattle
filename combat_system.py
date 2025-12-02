@@ -181,7 +181,7 @@ class SimpleBattle:
         print("\n--- PLAYER TURN ---")
         print("1. Basic Attack")
         print("2. Special Ability")
-        print("3. Run")
+        print("3. Run Away")
 
         choice = input("Choose action: ").strip()
 
