@@ -4,7 +4,7 @@ Combat System Module - Starter Code
 
 Name: Jerryeka Battle
 
-AI Usage: [Document any AI assistance used]
+AI Usage: used to check for errors
 
 Handles combat mechanics
 """

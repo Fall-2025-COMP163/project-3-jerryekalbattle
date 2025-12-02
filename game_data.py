@@ -4,7 +4,7 @@ Game Data Module - Starter Code
 
 Name: Jerryeka Battle
 
-AI Usage: [Document any AI assistance used]
+AI Usage: used to check for errors
 
 This module handles loading and validating game data from text files.
 """

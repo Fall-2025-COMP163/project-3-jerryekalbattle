@@ -4,7 +4,7 @@ Character Manager Module - Starter Code
 
 Name: Jerryeka Battle
 
-AI Usage: [Document any AI assistance used]
+AI Usage: used to check for errors
 
 This module handles character creation, loading, and saving.
 """

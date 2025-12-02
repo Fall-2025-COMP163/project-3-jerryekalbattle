@@ -1,0 +1,15 @@
+NAME: Dick
+CLASS: Warrior
+LEVEL: 1
+HEALTH: 120
+MAX_HEALTH: 120
+STRENGTH: 15
+MAGIC: 5
+EXPERIENCE: 50
+GOLD: 125
+INVENTORY: []
+ACTIVE_QUESTS: []
+COMPLETED_QUESTS: ['first_steps']
+EQUIPPED_WEAPON: None
+EQUIPPED_ARMOR: None
+ITEM_DATA: {'health_potion': {'item_id': 'health_potion', 'name': 'Health Potion', 'type': 'consumable', 'effect': 'health:20', 'cost': 25, 'description': 'Restores 20 health points'}, 'super_health_potion': {'item_id': 'super_health_potion', 'name': 'Super Health Potion', 'type': 'consumable', 'effect': 'health:50', 'cost': 75, 'description': 'Restores 50 health points'}, 'iron_sword': {'item_id': 'iron_sword', 'name': 'Iron Sword', 'type': 'weapon', 'effect': 'strength:5', 'cost': 100, 'description': 'A sturdy iron sword that increases strength'}, 'steel_sword': {'item_id': 'steel_sword', 'name': 'Steel Sword', 'type': 'weapon', 'effect': 'strength:10', 'cost': 250, 'description': 'A masterwork steel sword for experienced warriors'}, 'fire_staff': {'item_id': 'fire_staff', 'name': 'Fire Staff', 'type': 'weapon', 'effect': 'magic:8', 'cost': 200, 'description': 'A magical staff imbued with fire magic'}, 'leather_armor': {'item_id': 'leather_armor', 'name': 'Leather Armor', 'type': 'armor', 'effect': 'max_health:10', 'cost': 75, 'description': 'Light armor that increases maximum health'}, 'steel_armor': {'item_id': 'steel_armor', 'name': 'Steel Armor', 'type': 'armor', 'effect': 'max_health:25', 'cost': 200, 'description': 'Heavy armor providing excellent protection'}, 'magic_robe': {'item_id': 'magic_robe', 'name': 'Magic Robe', 'type': 'armor', 'effect': 'magic:5', 'cost': 150, 'description': 'Enchanted robes that enhance magical power'}, 'strength_elixir': {'item_id': 'strength_elixir', 'name': 'Strength Elixir', 'type': 'consumable', 'effect': 'strength:3', 'cost': 50, 'description': 'Permanently increases strength by 3'}, 'wisdom_elixir': {'item_id': 'wisdom_elixir', 'name': 'Wisdom Elixir', 'type': 'consumable', 'effect': 'magic:3', 'cost': 50, 'description': 'Permanently increases magic by 3'}}

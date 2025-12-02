@@ -4,7 +4,7 @@ Main Game Module - Starter Code
 
 Name: Jerryeka Battle
 
-AI Usage: [Document any AI assistance used]
+AI Usage: used to check for errors
 
 This is the main game file that ties all modules together.
 Demonstrates module integration and complete game flow.
