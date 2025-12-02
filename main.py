@@ -96,7 +96,7 @@ def new_game():
     try:
         character_manager.save_character(current_character)
         print(f"Character '{name}' created and saved.")
-    except Exception as e:
+    except InvalidCharacterClassError as e:
         print(f"Warning: character was not saved: {e}")
 
     game_loop()
