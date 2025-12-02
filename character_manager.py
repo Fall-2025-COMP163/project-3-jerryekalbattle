@@ -110,9 +110,6 @@ def save_character(character, save_directory="data/save_games"):
     except Exception as e:
         raise SaveFileCorruptedError(str(e))
     
-    except Exception as e:
-        raise SaveFileCorruptedError(str(e))
-    
     # TODO: Implement save functionality
     # Create save_directory if it doesn't exist
     # Handle any file I/O errors appropriately
