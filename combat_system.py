@@ -60,6 +60,24 @@ def create_enemy(enemy_type):
             "magic": 15,
             "xp_reward": 200,
             "gold_reward": 100
+        },
+        "demon king underlings": {
+            "name": "demon king underlings",
+            "health": 500,
+            "max_health": 500,
+            "strength": 50,
+            "magic": 30,
+            "xp_reward": 1000,
+            "gold_reward": 500
+        },
+        "demon king": {
+            "name": "demon king",
+            "health": 1000,
+            "max_health": 1000,
+            "strength": 80,
+            "magic": 50,
+            "xp_reward": 2000,
+            "gold_reward": 1000
         }
     }
     if enemy_type not in enemies:
@@ -85,8 +103,13 @@ def get_random_enemy_for_level(character_level):
         return create_enemy("goblin")
     elif character_level <= 5:
         return create_enemy("orc")
-    else:
+    elif character_level <= 7:
         return create_enemy("dragon")
+    elif character_level <= 9:
+        return create_enemy("demon king underlings")
+    else:
+        return create_enemy("demon king")
+        
     
     # TODO: Implement level-appropriate enemy selection
     # Use if/elif/else to select enemy type
