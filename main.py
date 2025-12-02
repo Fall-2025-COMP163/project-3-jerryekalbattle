@@ -51,7 +51,7 @@ def main_menu():
         choice = input("Choose an option (1-3): ").strip()
         if choice in ("1", "2", "3"):
             return int(choice)
-        print("Invalid input. Please enter 1, 2, or 3.")
+        print("Invalid. Need to enter 1, 2, or 3.")
 
     # TODO: Implement main menu display
     # Show options
@@ -73,6 +73,7 @@ def new_game():
 
     print("\n=== NEW GAME ===")
     name = input("Enter character name: ").strip()
+    
     if not name:
         print("Name cannot be empty.")
         return
@@ -96,7 +97,7 @@ def new_game():
         character_manager.save_character(current_character)
         print(f"Character '{name}' created and saved.")
     except Exception as e:
-        print(f"Warning: could not save character: {e}")
+        print(f"Warning: character was not saved: {e}")
 
     game_loop()
 
@@ -132,14 +133,14 @@ def load_game():
         if choice.lower() == "b":
             return None
         if not choice.isdigit():
-            print("Please enter a number.")
+            print("Enter a number.")
             continue
 
         idx = int(choice)
         if 1 <= idx <= len(saves):
             selected = saves[idx - 1]
             break
-        print("Invalid choice.")
+        print("Invalid")
 
     try:
         loaded = character_manager.load_character(selected)
@@ -246,7 +247,7 @@ def game_menu():
         choice = input("Choose an option (1-6): ").strip()
         if choice in ("1", "2", "3", "4", "5", "6"):
             return int(choice)
-        print("Please enter a number between 1 and 6.")
+        print("Enter a number between 1 and 6.")
     # TODO: Implement game menu
 
 # ============================================================================
@@ -638,7 +639,7 @@ def handle_character_death():
             game_running = False
             return
         else:
-            print("Please answer 'y' or 'n'.")
+            print("Answer 'y' or 'n'.")
     # TODO: Implement death handling
     # Display death message
     # Offer: Revive (costs gold) or Quit
@@ -674,7 +675,7 @@ def main():
         load_game_data()
     except InvalidDataFormatError as e:
         print(f"Error loading game data: {e}")
-        print("Please check data files for errors.")
+        print("Check data files for errors.")
         return
     
     # Main menu loop
@@ -689,7 +690,7 @@ def main():
             print("\nThanks for playing Quest Chronicles!")
             break
         else:
-            print("Invalid choice. Please select 1-3.")
+            print("Invalid. Need to select 1-3.")
 
 if __name__ == "__main__":
     main()
